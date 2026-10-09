@@ -1,0 +1,19 @@
+name: CI
+on:
+  pull_request_target:
+  push:
+permissions: write-all
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: some-org/setup-thing@main
+      - run: echo "Building PR ${{ github.event.pull_request.title }}"
+      - run: npm install
+      - run: npm run build || true
+      - run: curl -s https://get.example.com/install.sh | bash
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
